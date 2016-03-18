@@ -1,0 +1,63 @@
+<dom-module id="cadastro-finalidade">
+	<style>
+		paper-material {
+			margin: 5%;
+			padding: 2%;
+		}
+	</style>
+
+	<template>
+	<paper-material elevation="2">
+			<paper-input id="titulo" label="Finalidade"></paper-input>
+			
+			<paper-material elevation="2">
+				
+				<paper-input id="pergunta" name="pergunta" label="Pergunta"></paper-input>
+
+				<paper-radio-group id="resposta" selected="sim">
+					<paper-radio-button name="sim" value="sim">Sim</paper-radio-button>
+					<paper-radio-button name="nao" value="nao">Não</paper-radio-button>
+				</paper-radio-group>
+
+				<paper-button on-click="cadastrarPergunta" raised>+</paper-button>
+			</paper-material>
+
+		<paper-button on-click="cadastrar" raised>Cadastrar</paper-button>
+		
+	</paper-material>
+
+	<form is="iron-form" id="form" method="post" action="http://192.168.5.99:9000/api/finalidades">
+		<input type="hidden" name="finalidade" value="{{finalidade}}">
+	</form>
+		
+	</template>
+	<script>
+		Polymer({
+			is: 'cadastro-finalidade',
+
+			properties:{
+				finalidade:{
+					type: Object,
+					value: {
+						titulo: "",
+						perguntas: []	
+					}
+
+				}
+
+			},
+
+			cadastrar: function() {
+				this.finalidade.titulo = this.$.titulo.value;
+				this.$.form.submit();
+			},
+
+			cadastrarPergunta: function() {
+				this.finalidade.perguntas.push({
+					titulo: this.$.pergunta.value,
+					resposta: this.$.resposta.selected
+				});
+			}
+		});
+	</script>
+</dom-module>
